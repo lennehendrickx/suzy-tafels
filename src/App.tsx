@@ -5,29 +5,36 @@ function App() {
   const numbers = Array.from({ length: 9 }, (_, i) => i + 1)
   const [answers, setAnswers] = useState<{ [key: string]: number | null }>({})
   const [isCorrect, setIsCorrect] = useState<{ [key: string]: boolean }>({})
+  const [showDialog, setShowDialog] = useState(false)
+  const [currentProblem, setCurrentProblem] = useState<{ row: number; col: number } | null>(null)
+  const [inputValue, setInputValue] = useState('')
 
   const handleCellClick = (row: number, col: number) => {
     const key = `${row}-${col}`
     if (answers[key] === undefined) {
-      const userAnswer = prompt(`✨ Hi! I'm Suzy! What's ${row} × ${col}? Let's solve this together! ✨`)
-      if (userAnswer !== null) {
-        const numAnswer = parseInt(userAnswer)
-        if (!isNaN(numAnswer)) {
-          const correct = numAnswer === row * col
-          setAnswers(prev => ({
-            ...prev,
-            [key]: numAnswer
-          }))
-          setIsCorrect(prev => ({
-            ...prev,
-            [key]: correct
-          }))
-          if (correct) {
-            alert("💖 Yay! You got it right! You're super smart! 💎")
-          } else {
-            alert("✨ That's okay! Let's keep practicing together! You can do it! 💝")
-          }
-        }
+      setCurrentProblem({ row, col })
+      setShowDialog(true)
+      setInputValue('')
+    }
+  }
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault()
+    if (currentProblem && inputValue) {
+      const numAnswer = parseInt(inputValue)
+      if (!isNaN(numAnswer)) {
+        const key = `${currentProblem.row}-${currentProblem.col}`
+        const correct = numAnswer === currentProblem.row * currentProblem.col
+        setAnswers(prev => ({
+          ...prev,
+          [key]: numAnswer
+        }))
+        setIsCorrect(prev => ({
+          ...prev,
+          [key]: correct
+        }))
+        setShowDialog(false)
+        setCurrentProblem(null)
       }
     }
   }
@@ -86,6 +93,40 @@ function App() {
       <button className="reset-button" onClick={handleReset}>
         ✨ Play Again ✨
       </button>
+
+      {showDialog && currentProblem && (
+        <div className="dialog-overlay">
+          <div className="dialog">
+            <div className="dialog-content">
+              <h2>✨ Time to Multiply! ✨</h2>
+              <p className="problem">
+                What is {currentProblem.row} × {currentProblem.col}?
+              </p>
+              <form onSubmit={handleSubmit}>
+                <input
+                  type="number"
+                  value={inputValue}
+                  onChange={(e) => setInputValue(e.target.value)}
+                  autoFocus
+                  placeholder="Type your answer..."
+                />
+                <div className="dialog-buttons">
+                  <button type="submit" className="submit-button">
+                    Check Answer! 💫
+                  </button>
+                  <button 
+                    type="button" 
+                    className="cancel-button"
+                    onClick={() => setShowDialog(false)}
+                  >
+                    Try Later 🌸
+                  </button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   )
 }
