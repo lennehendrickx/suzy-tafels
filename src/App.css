@@ -560,8 +560,8 @@ h1::after {
   position: absolute;
   top: 4px;
   right: 4px;
-  background-color: #ff9ecd;
-  color: #4a1d35;
+  background-color: #ff4d4d;
+  color: white;
   font-size: 0.8rem;
   width: 18px;
   height: 18px;
@@ -572,6 +572,8 @@ h1::after {
   font-weight: bold;
   opacity: 0.9;
   animation: popIn 0.3s ease-out;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+  z-index: 2;
 }
 
 @keyframes popIn {
@@ -581,13 +583,14 @@ h1::after {
 }
 
 .cell.correct .retry-count {
-  background-color: #a5d6a7;
-  color: #1b5e20;
+  background-color: #ff4d4d;
+  color: white;
 }
 
 .cell.incorrect .retry-count {
-  background-color: #ffcdd2;
-  color: #c62828;
+  background-color: #ff4d4d;
+  color: white;
+  animation: shake 0.5s ease-in-out;
 }
 
 .cell.unanswered {
