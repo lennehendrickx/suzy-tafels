@@ -1,0 +1,196 @@
+@import url('https://fonts.googleapis.com/css2?family=Quicksand:wght@400;600&display=swap');
+
+body {
+  background-color: #ff9ecd;
+  background-image: 
+    radial-gradient(circle at 100% 100%, #ff80b9 0%, transparent 50%),
+    radial-gradient(circle at 0% 0%, #ff80b9 0%, transparent 50%);
+  min-height: 100vh;
+}
+
+.container {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 2rem;
+  text-align: center;
+}
+
+h1 {
+  margin-bottom: 1rem;
+  color: #ffffff;
+  font-family: 'Quicksand', sans-serif;
+  font-size: 3rem;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2),
+               0 0 10px #e6007a;
+  letter-spacing: 2px;
+  font-weight: 600;
+}
+
+.subtitle {
+  color: #4a1d35;
+  font-family: 'Quicksand', sans-serif;
+  font-size: 1.3rem;
+  margin-bottom: 2rem;
+  font-weight: 600;
+}
+
+.grid {
+  display: inline-block;
+  border: 4px solid #4a1d35;
+  border-radius: 20px;
+  overflow: hidden;
+  background-color: white;
+  box-shadow: 0 8px 32px rgba(74, 29, 53, 0.2),
+              0 0 20px rgba(255, 255, 255, 0.4);
+}
+
+.row {
+  display: flex;
+}
+
+.cell {
+  width: 65px;
+  height: 65px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 2px solid #4a1d35;
+  font-size: 1.3rem;
+  cursor: pointer;
+  transition: all 0.3s;
+  font-family: 'Quicksand', sans-serif;
+  background-color: white;
+  position: relative;
+  overflow: hidden;
+  font-weight: 600;
+  color: #4a1d35;
+}
+
+.cell:not(.header-cell):hover {
+  background-color: #ffe6f3;
+  transform: scale(1.05);
+  box-shadow: 0 0 15px rgba(74, 29, 53, 0.2);
+}
+
+.header-cell {
+  background: #e6007a;
+  color: white;
+  font-weight: bold;
+  cursor: default;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
+  border-color: #4a1d35;
+}
+
+.cell.correct {
+  background: #e8f5e9;
+  color: #1b5e20;
+  font-weight: bold;
+  border-color: #2e7d32;
+  animation: celebrate 0.5s ease;
+  position: relative;
+}
+
+.cell.correct::before,
+.cell.correct::after {
+  content: '✨';
+  position: absolute;
+  font-size: 1rem;
+  pointer-events: none;
+}
+
+.cell.correct::before {
+  --tx: -20px;
+  --ty: -20px;
+  --r: -45deg;
+  top: 50%;
+  left: 50%;
+  animation: multiSparkle 1s ease-out forwards;
+}
+
+.cell.correct::after {
+  --tx: 20px;
+  --ty: -20px;
+  --r: 45deg;
+  top: 50%;
+  left: 50%;
+  animation: multiSparkle 1s ease-out 0.2s forwards;
+}
+
+.cell.correct-sparkles {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+
+.cell.correct-sparkles span {
+  position: absolute;
+  width: 20px;
+  height: 20px;
+  background: radial-gradient(circle, #ffd700 0%, transparent 70%);
+  border-radius: 50%;
+  animation: multiSparkle 1s ease-out forwards;
+}
+
+.cell.correct-sparkles span:nth-child(1) { --tx: 30px; --ty: -30px; --r: 60deg; animation-delay: 0.1s; }
+.cell.correct-sparkles span:nth-child(2) { --tx: -30px; --ty: 30px; --r: -60deg; animation-delay: 0.2s; }
+.cell.correct-sparkles span:nth-child(3) { --tx: -30px; --ty: -30px; --r: -120deg; animation-delay: 0.3s; }
+.cell.correct-sparkles span:nth-child(4) { --tx: 30px; --ty: 30px; --r: 120deg; animation-delay: 0.4s; }
+
+.cell.incorrect {
+  background: #ffebee;
+  color: #c62828;
+  font-weight: bold;
+  border-color: #c62828;
+}
+
+@keyframes sparkle {
+  0%, 100% { opacity: 0; transform: scale(0); }
+  50% { opacity: 1; transform: scale(1); }
+}
+
+@keyframes celebrate {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.1); }
+  100% { transform: scale(1); }
+}
+
+@keyframes multiSparkle {
+  0% { transform: translate(0, 0) rotate(0deg); opacity: 0; }
+  50% { opacity: 1; }
+  100% { transform: translate(var(--tx), var(--ty)) rotate(var(--r)); opacity: 0; }
+}
+
+.cell:not(.header-cell):before {
+  content: '✨';
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  font-size: 0.8rem;
+  opacity: 0;
+}
+
+.cell:not(.header-cell):hover:before {
+  animation: sparkle 1s ease infinite;
+}
+
+.reset-button {
+  margin-top: 2rem;
+  padding: 12px 24px;
+  font-family: 'Quicksand', sans-serif;
+  font-size: 1.1rem;
+  background: #e6007a;
+  color: white;
+  border: none;
+  border-radius: 25px;
+  cursor: pointer;
+  transition: all 0.3s;
+  box-shadow: 0 4px 15px rgba(74, 29, 53, 0.3);
+  font-weight: 600;
+}
+
+.reset-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(74, 29, 53, 0.4);
+  background: #ff1493;
+}
