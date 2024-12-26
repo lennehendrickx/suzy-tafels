@@ -7,11 +7,19 @@ function App() {
   const [isCorrect, setIsCorrect] = useState<{ [key: string]: boolean }>({})
   const [retries, setRetries] = useState<{ [key: string]: number }>({})
   const [showDialog, setShowDialog] = useState(false)
+  const [showResetDialog, setShowResetDialog] = useState(false)
   const [currentProblem, setCurrentProblem] = useState<{ row: number; col: number } | null>(null)
   const [inputValue, setInputValue] = useState('')
   const [feedback, setFeedback] = useState('')
   const [completedRows, setCompletedRows] = useState<number[]>([])
   const [completedCols, setCompletedCols] = useState<number[]>([])
+  const [totalValue, setTotalValue] = useState(0)
+  const [isScoreAnimating, setIsScoreAnimating] = useState(false)
+
+  const animateScore = () => {
+    setIsScoreAnimating(true)
+    setTimeout(() => setIsScoreAnimating(false), 500)
+  }
 
   // Check for completed rows and columns whenever isCorrect changes
   useEffect(() => {
@@ -63,6 +71,8 @@ function App() {
             ...prev,
             [key]: true
           }))
+          setTotalValue(prev => prev + numAnswer)
+          animateScore()
           setShowDialog(false)
           setCurrentProblem(null)
         } else {
@@ -70,7 +80,12 @@ function App() {
             ...prev,
             [key]: (prev[key] || 0) + 1
           }))
-          setFeedback(`Oeps! Dat is niet helemaal juist. Probeer het nog eens! 💝\nTip: Tel ${currentProblem.row} groepjes van ${currentProblem.col}`)
+          setTotalValue(prev => {
+            const newValue = Math.max(0, prev - 5)
+            if (newValue !== prev) animateScore()
+            return newValue
+          })
+          setFeedback(`Oeps! Dat is niet helemaal juist. Je verliest 5 punten! 💝\nTip: Tel ${currentProblem.row} groepjes van ${currentProblem.col}`)
           setInputValue('')
         }
       }
@@ -78,6 +93,10 @@ function App() {
   }
 
   const handleReset = () => {
+    setShowResetDialog(true)
+  }
+
+  const confirmReset = () => {
     setAnswers({})
     setIsCorrect({})
     setRetries({})
@@ -86,7 +105,8 @@ function App() {
     setFeedback('')
     setCompletedRows([])
     setCompletedCols([])
-    alert("✨ Laten we opnieuw beginnen! Ben je er klaar voor? 💖")
+    setTotalValue(0)
+    setShowResetDialog(false)
   }
 
   const getCellClass = (key: string, row: number, col: number) => {
@@ -131,8 +151,16 @@ function App() {
 
   return (
     <div className="container">
-      <h1>✨ Suzy's Tafels Avontuur ✨</h1>
-      <p className="subtitle">Laten we samen de tafels leren en plezier maken! 💖</p>
+      <h1>
+        ✨ Suzy's Tafels Avontuur ✨
+        <span className="title-sparkle">✨</span>
+        <span className="title-sparkle">✨</span>
+        <span className="title-sparkle">✨</span>
+        <span className="title-sparkle">✨</span>
+      </h1>
+      <div className={`total-value ${isScoreAnimating ? 'points-changed' : ''}`}>
+        Score: {totalValue}
+      </div>
       <div className="grid">
         <div className="row header">
           <div className="cell"></div>
@@ -162,6 +190,34 @@ function App() {
       <button className="reset-button" onClick={handleReset}>
         ✨ Opnieuw Spelen ✨
       </button>
+
+      {showResetDialog && (
+        <div className="dialog-overlay" onClick={() => setShowResetDialog(false)}>
+          <div className="dialog" onClick={e => e.stopPropagation()}>
+            <div className="dialog-content">
+              <h2>✨ Opnieuw beginnen? ✨</h2>
+              <p className="problem">
+                Weet je zeker dat je opnieuw wilt beginnen?<br/>
+                Je score wordt gereset naar 0!
+              </p>
+              <div className="dialog-buttons">
+                <button 
+                  className="submit-button"
+                  onClick={confirmReset}
+                >
+                  Ja, begin opnieuw! 🌟
+                </button>
+                <button 
+                  className="cancel-button"
+                  onClick={() => setShowResetDialog(false)}
+                >
+                  Nee, speel verder! 🎮
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
 
       {showDialog && currentProblem && (
         <div className="dialog-overlay" onClick={() => setShowDialog(false)}>

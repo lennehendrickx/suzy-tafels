@@ -48,6 +48,51 @@
   100% { transform: scale(0) rotate(360deg); opacity: 0; }
 }
 
+@keyframes titleSparkle {
+  0% { transform: translate(0, 0) scale(0.8) rotate(0deg); opacity: 0; }
+  50% { transform: translate(var(--tx), var(--ty)) scale(1.2) rotate(180deg); opacity: 1; }
+  100% { transform: translate(var(--tx-end), var(--ty-end)) scale(0.8) rotate(360deg); opacity: 0; }
+}
+
+@keyframes scoreGlitter {
+  0% { 
+    background-position: 0% 50%;
+    transform: scale(1) rotate(-2deg);
+  }
+  25% {
+    transform: scale(1.15) rotate(2deg);
+  }
+  50% { 
+    background-position: 100% 50%;
+    transform: scale(1.1) rotate(-1deg);
+  }
+  75% {
+    transform: scale(1.05) rotate(1deg);
+  }
+  100% { 
+    background-position: 0% 50%;
+    transform: scale(1) rotate(0deg);
+  }
+}
+
+@keyframes scoreSparkleLeft {
+  0% { transform: translate(-100%, -50%) rotate(0deg) scale(0); opacity: 0; }
+  25% { transform: translate(-120%, -80%) rotate(90deg) scale(1.2); opacity: 1; }
+  100% { transform: translate(-140%, -20%) rotate(180deg) scale(0); opacity: 0; }
+}
+
+@keyframes scoreSparkleRight {
+  0% { transform: translate(100%, -50%) rotate(0deg) scale(0); opacity: 0; }
+  25% { transform: translate(120%, -80%) rotate(-90deg) scale(1.2); opacity: 1; }
+  100% { transform: translate(140%, -20%) rotate(-180deg) scale(0); opacity: 0; }
+}
+
+@keyframes scorePop {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.2); }
+  100% { transform: scale(1); }
+}
+
 body {
   background-color: #ff9ecd;
   background-image: 
@@ -72,11 +117,87 @@ h1 {
   color: #ffffff;
   font-family: 'Quicksand', sans-serif;
   font-size: 3rem;
-  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2),
-               0 0 10px #e6007a;
+  text-shadow: 3px 3px 0px #e6007a,
+               6px 6px 0px rgba(230, 0, 122, 0.3);
   letter-spacing: 2px;
   font-weight: 600;
-  animation: float 3s ease-in-out infinite;
+  background: linear-gradient(45deg, #ffffff, #ffe6f3);
+  -webkit-background-clip: text;
+  background-clip: text;
+  transition: transform 0.3s ease;
+  padding: 0.5rem;
+  position: relative;
+}
+
+h1:hover {
+  transform: scale(1.02);
+}
+
+h1::before,
+h1::after {
+  content: '✨';
+  position: absolute;
+  font-size: 2rem;
+}
+
+h1::before {
+  left: -15px;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+h1::after {
+  right: -15px;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.title-sparkle {
+  position: absolute;
+  font-size: 1.2rem;
+  pointer-events: none;
+  animation: titleSparkle 2s linear infinite;
+  z-index: 2;
+}
+
+.title-sparkle:nth-child(1) { 
+  --tx: -20px;
+  --ty: -20px;
+  --tx-end: -40px;
+  --ty-end: -40px;
+  top: 20%;
+  left: 20%;
+  animation-delay: 0s;
+}
+
+.title-sparkle:nth-child(2) { 
+  --tx: 20px;
+  --ty: -15px;
+  --tx-end: 40px;
+  --ty-end: -30px;
+  top: 30%;
+  right: 20%;
+  animation-delay: 0.5s;
+}
+
+.title-sparkle:nth-child(3) { 
+  --tx: -15px;
+  --ty: 20px;
+  --tx-end: -30px;
+  --ty-end: 40px;
+  bottom: 20%;
+  left: 30%;
+  animation-delay: 1s;
+}
+
+.title-sparkle:nth-child(4) { 
+  --tx: 15px;
+  --ty: 15px;
+  --tx-end: 30px;
+  --ty-end: 30px;
+  bottom: 30%;
+  right: 30%;
+  animation-delay: 1.5s;
 }
 
 .subtitle {
@@ -571,4 +692,95 @@ h1 {
 .floating-element,
 .floating-heart {
   display: none;
+}
+
+.total-value {
+  font-family: 'Quicksand', sans-serif;
+  font-size: 1.4rem;
+  color: #4a1d35;
+  margin-bottom: 1.5rem;
+  padding: 0.6rem 1.5rem;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.9), rgba(255, 230, 243, 0.9));
+  border-radius: 20px;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: 600;
+  box-shadow: 0 4px 12px rgba(74, 29, 53, 0.15);
+  backdrop-filter: blur(10px);
+  transition: all 0.3s ease;
+  position: relative;
+  text-shadow: 1px 1px 0px rgba(255, 255, 255, 1);
+}
+
+.total-value::before {
+  content: '👑';
+  font-size: 1.5rem;
+  margin-right: 5px;
+  transition: transform 0.3s ease;
+}
+
+.total-value:hover::before {
+  transform: rotate(15deg) scale(1.2);
+}
+
+.total-value.points-changed {
+  animation: scoreGlitter 0.8s ease-out;
+  background: linear-gradient(
+    45deg,
+    rgba(255, 192, 203, 0.95) 0%,
+    rgba(255, 105, 180, 0.95) 25%,
+    rgba(255, 20, 147, 0.95) 50%,
+    rgba(255, 105, 180, 0.95) 75%,
+    rgba(255, 192, 203, 0.95) 100%
+  );
+  background-size: 200% 200%;
+  color: white;
+  text-shadow: 2px 2px 0px rgba(230, 0, 122, 0.5);
+}
+
+.total-value.points-changed::before {
+  animation: scorePop 0.8s ease-out;
+}
+
+.total-value.points-changed::after,
+.total-value.points-changed::before {
+  content: '✨';
+  position: absolute;
+  top: 50%;
+  font-size: 1.5rem;
+  pointer-events: none;
+  filter: drop-shadow(0 0 5px rgba(255, 255, 255, 0.8));
+}
+
+.total-value.points-changed::before {
+  left: 0;
+  animation: scoreSparkleLeft 0.8s ease-out;
+}
+
+.total-value.points-changed::after {
+  right: 0;
+  animation: scoreSparkleRight 0.8s ease-out;
+}
+
+/* Add multiple sparkles using pseudo-elements on nested spans */
+.total-value.points-changed span::before,
+.total-value.points-changed span::after {
+  content: '✨';
+  position: absolute;
+  font-size: 1.5rem;
+  pointer-events: none;
+  filter: drop-shadow(0 0 5px rgba(255, 255, 255, 0.8));
+}
+
+.total-value.points-changed span::before {
+  animation: scoreSparkleLeft 0.8s ease-out 0.1s;
+  left: 30%;
+  top: -50%;
+}
+
+.total-value.points-changed span::after {
+  animation: scoreSparkleRight 0.8s ease-out 0.2s;
+  right: 30%;
+  top: -50%;
 }
