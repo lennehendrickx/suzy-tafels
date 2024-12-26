@@ -16,6 +16,38 @@
   100% { filter: hue-rotate(360deg); }
 }
 
+@keyframes glitter {
+  0%, 100% { 
+    background-position: 0% 50%;
+    opacity: 0.6;
+  }
+  50% { 
+    background-position: 100% 50%;
+    opacity: 1;
+  }
+}
+
+@keyframes sparkleShimmer {
+  0% { 
+    opacity: 0; 
+    transform: translateY(-10px) scale(0) rotate(-45deg);
+  }
+  50% { 
+    opacity: 1; 
+    transform: translateY(0) scale(1.2) rotate(45deg);
+  }
+  100% { 
+    opacity: 0; 
+    transform: translateY(10px) scale(0) rotate(90deg);
+  }
+}
+
+@keyframes celebrationSparkle {
+  0% { transform: scale(0) rotate(0deg); opacity: 0; }
+  50% { transform: scale(1.2) rotate(180deg); opacity: 1; }
+  100% { transform: scale(0) rotate(360deg); opacity: 0; }
+}
+
 body {
   background-color: #ff9ecd;
   background-image: 
@@ -460,4 +492,74 @@ h1 {
 .multiplication span:nth-child(2) {
   font-weight: bold;
   color: #e6007a;
+}
+
+.completed-row, .completed-col {
+  position: relative;
+  overflow: hidden;
+}
+
+.completed-row::before, .completed-col::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(
+    45deg,
+    rgba(255, 192, 203, 0.4) 0%,
+    rgba(255, 105, 180, 0.4) 25%,
+    rgba(255, 20, 147, 0.4) 50%,
+    rgba(255, 105, 180, 0.4) 75%,
+    rgba(255, 192, 203, 0.4) 100%
+  );
+  background-size: 200% 200%;
+  animation: glitter 3s linear infinite;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.completed-row::after, .completed-col::after {
+  content: '✨';
+  position: absolute;
+  font-size: 1.5rem;
+  animation: sparkleShimmer 2s ease-in-out infinite;
+  z-index: 2;
+}
+
+.completed-row::after {
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.completed-col::after {
+  bottom: 10px;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.completed-row.header-cell, .completed-col.header-cell {
+  background: linear-gradient(135deg, #ff69b4, #ff1493);
+  animation: glitter 3s linear infinite, pulse 2s ease-in-out infinite;
+  position: relative;
+}
+
+.completed-row.header-cell::before, .completed-col.header-cell::before {
+  content: '🌟';
+  position: absolute;
+  font-size: 1.2rem;
+  animation: celebrationSparkle 1.5s ease-in-out infinite;
+  z-index: 2;
+}
+
+.completed-row.header-cell::before {
+  right: 5px;
+  top: 5px;
+}
+
+.completed-col.header-cell::before {
+  left: 5px;
+  bottom: 5px;
 }

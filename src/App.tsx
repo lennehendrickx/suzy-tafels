@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import './App.css'
 
 function App() {
@@ -10,6 +10,27 @@ function App() {
   const [currentProblem, setCurrentProblem] = useState<{ row: number; col: number } | null>(null)
   const [inputValue, setInputValue] = useState('')
   const [feedback, setFeedback] = useState('')
+  const [completedRows, setCompletedRows] = useState<number[]>([])
+  const [completedCols, setCompletedCols] = useState<number[]>([])
+
+  // Check for completed rows and columns whenever isCorrect changes
+  useEffect(() => {
+    // Check all rows
+    numbers.forEach(row => {
+      const isRowComplete = numbers.every(col => isCorrect[`${row}-${col}`])
+      if (isRowComplete && !completedRows.includes(row)) {
+        setCompletedRows(prev => [...prev, row])
+      }
+    })
+
+    // Check all columns
+    numbers.forEach(col => {
+      const isColComplete = numbers.every(row => isCorrect[`${row}-${col}`])
+      if (isColComplete && !completedCols.includes(col)) {
+        setCompletedCols(prev => [...prev, col])
+      }
+    })
+  }, [isCorrect])
 
   const handleCellClick = (row: number, col: number) => {
     const key = `${row}-${col}`
@@ -63,12 +84,16 @@ function App() {
     setShowDialog(false)
     setCurrentProblem(null)
     setFeedback('')
+    setCompletedRows([])
+    setCompletedCols([])
     alert("✨ Laten we opnieuw beginnen! Ben je er klaar voor? 💖")
   }
 
-  const getCellClass = (key: string) => {
-    if (answers[key] === undefined) return 'cell unanswered'
-    return `cell ${isCorrect[key] ? 'correct' : 'incorrect'}`
+  const getCellClass = (key: string, row: number, col: number) => {
+    const baseClass = answers[key] === undefined ? 'cell unanswered' : `cell ${isCorrect[key] ? 'correct' : 'incorrect'}`
+    const isInCompletedRow = completedRows.includes(row)
+    const isInCompletedCol = completedCols.includes(col)
+    return `${baseClass} ${isInCompletedRow ? 'completed-row' : ''} ${isInCompletedCol ? 'completed-col' : ''}`
   }
 
   const renderSparkles = () => (
@@ -112,20 +137,20 @@ function App() {
         <div className="row header">
           <div className="cell"></div>
           {numbers.map(num => (
-            <div key={num} className="cell header-cell">
+            <div key={num} className={`cell header-cell ${completedCols.includes(num) ? 'completed-col' : ''}`}>
               {num}
             </div>
           ))}
         </div>
         {numbers.map(row => (
           <div key={row} className="row">
-            <div className="cell header-cell">
+            <div className={`cell header-cell ${completedRows.includes(row) ? 'completed-row' : ''}`}>
               {row}
             </div>
             {numbers.map(col => (
               <div
                 key={`${row}-${col}`}
-                className={getCellClass(`${row}-${col}`)}
+                className={getCellClass(`${row}-${col}`, row, col)}
                 onClick={() => handleCellClick(row, col)}
               >
                 {getCellContent(row, col)}
