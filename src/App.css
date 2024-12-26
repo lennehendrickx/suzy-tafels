@@ -54,6 +54,8 @@ body {
     radial-gradient(circle at 100% 100%, #ff80b9 0%, transparent 50%),
     radial-gradient(circle at 0% 0%, #ff80b9 0%, transparent 50%);
   min-height: 100vh;
+  position: relative;
+  overflow-x: hidden;
 }
 
 .container {
@@ -61,6 +63,8 @@ body {
   margin: 0 auto;
   padding: 2rem;
   text-align: center;
+  position: relative;
+  z-index: 1;
 }
 
 h1 {
@@ -562,4 +566,9 @@ h1 {
 .completed-col.header-cell::before {
   left: 5px;
   bottom: 5px;
+}
+
+.floating-element,
+.floating-heart {
+  display: none;
 }
