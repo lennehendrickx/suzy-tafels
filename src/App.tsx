@@ -5,6 +5,7 @@ function App() {
   const numbers = Array.from({ length: 9 }, (_, i) => i + 1)
   const [answers, setAnswers] = useState<{ [key: string]: number | null }>({})
   const [isCorrect, setIsCorrect] = useState<{ [key: string]: boolean }>({})
+  const [retries, setRetries] = useState<{ [key: string]: number }>({})
   const [showDialog, setShowDialog] = useState(false)
   const [currentProblem, setCurrentProblem] = useState<{ row: number; col: number } | null>(null)
   const [inputValue, setInputValue] = useState('')
@@ -16,6 +17,12 @@ function App() {
     setShowDialog(true)
     setInputValue('')
     setFeedback('')
+    if (!retries[key]) {
+      setRetries(prev => ({
+        ...prev,
+        [key]: 0
+      }))
+    }
   }
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -38,6 +45,10 @@ function App() {
           setShowDialog(false)
           setCurrentProblem(null)
         } else {
+          setRetries(prev => ({
+            ...prev,
+            [key]: (prev[key] || 0) + 1
+          }))
           setFeedback(`Oeps! Dat is niet helemaal juist. Probeer het nog eens! 💝\nTip: Tel ${currentProblem.row} groepjes van ${currentProblem.col}`)
           setInputValue('')
         }
@@ -48,6 +59,7 @@ function App() {
   const handleReset = () => {
     setAnswers({})
     setIsCorrect({})
+    setRetries({})
     setShowDialog(false)
     setCurrentProblem(null)
     setFeedback('')
@@ -94,6 +106,11 @@ function App() {
               >
                 {answers[`${row}-${col}`] ?? ''}
                 {isCorrect[`${row}-${col}`] && renderSparkles()}
+                {retries[`${row}-${col}`] > 0 && (
+                  <span className="retry-count">
+                    {retries[`${row}-${col}`]}
+                  </span>
+                )}
               </div>
             ))}
           </div>
