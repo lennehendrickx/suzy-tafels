@@ -38,7 +38,7 @@ function App() {
           setShowDialog(false)
           setCurrentProblem(null)
         } else {
-          setFeedback(`Oops! That's not quite right. Let's try again! 💝\nHint: Count ${currentProblem.row} groups of ${currentProblem.col}`)
+          setFeedback(`Oeps! Dat is niet helemaal juist. Probeer het nog eens! 💝\nTip: Tel ${currentProblem.row} groepjes van ${currentProblem.col}`)
           setInputValue('')
         }
       }
@@ -51,7 +51,7 @@ function App() {
     setShowDialog(false)
     setCurrentProblem(null)
     setFeedback('')
-    alert("✨ Let's start a new round of fun math! Ready? 💖")
+    alert("✨ Laten we opnieuw beginnen! Ben je er klaar voor? 💖")
   }
 
   const getCellClass = (key: string) => {
@@ -70,8 +70,8 @@ function App() {
 
   return (
     <div className="container">
-      <h1>✨ Suzy's Math Adventure ✨</h1>
-      <p className="subtitle">Let's learn multiplication together and have fun! 💖</p>
+      <h1>✨ Suzy's Tafels Avontuur ✨</h1>
+      <p className="subtitle">Laten we samen de tafels leren en plezier maken! 💖</p>
       <div className="grid">
         <div className="row header">
           <div className="cell"></div>
@@ -100,16 +100,16 @@ function App() {
         ))}
       </div>
       <button className="reset-button" onClick={handleReset}>
-        ✨ Play Again ✨
+        ✨ Opnieuw Spelen ✨
       </button>
 
       {showDialog && currentProblem && (
         <div className="dialog-overlay" onClick={() => setShowDialog(false)}>
           <div className="dialog" onClick={e => e.stopPropagation()}>
             <div className="dialog-content">
-              <h2>✨ Time to Multiply! ✨</h2>
+              <h2>✨ Tijd om te Vermenigvuldigen! ✨</h2>
               <p className="problem">
-                What is {currentProblem.row} × {currentProblem.col}?
+                Hoeveel is {currentProblem.row} × {currentProblem.col}?
               </p>
               {feedback && <p className="feedback">{feedback}</p>}
               <form onSubmit={handleSubmit}>
@@ -118,18 +118,18 @@ function App() {
                   value={inputValue}
                   onChange={(e) => setInputValue(e.target.value)}
                   autoFocus
-                  placeholder="Type your answer..."
+                  placeholder="Type je antwoord..."
                 />
                 <div className="dialog-buttons">
                   <button type="submit" className="submit-button">
-                    Check Answer! 💫
+                    Controleer! 💫
                   </button>
                   <button 
                     type="button" 
                     className="cancel-button"
                     onClick={() => setShowDialog(false)}
                   >
-                    Try Later 🌸
+                    Later 🌸
                   </button>
                 </div>
               </form>
