@@ -894,3 +894,400 @@ h1::after {
     padding: 0.4rem 0.8rem;
   }
 }
+
+.navbar {
+  background: linear-gradient(45deg, #ff69b4, #ff1493, #ff69b4);
+  background-size: 200% 200%;
+  padding: 1rem;
+  box-shadow: 0 4px 20px rgba(255, 105, 180, 0.4);
+  position: relative;
+  overflow: hidden;
+  animation: gradientMove 8s ease infinite;
+}
+
+.navbar::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(90deg, 
+    transparent 0%,
+    rgba(255, 255, 255, 0.3) 50%,
+    transparent 100%
+  );
+  animation: shimmer 3s infinite;
+  transform: skewX(-20deg);
+}
+
+.navbar::after {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  right: -50%;
+  bottom: -50%;
+  background: radial-gradient(
+    circle,
+    rgba(255, 255, 255, 0.1) 0%,
+    transparent 70%
+  );
+  animation: sparkleRotate 8s infinite linear;
+}
+
+@keyframes gradientMove {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+@keyframes shimmer {
+  0% { transform: translateX(-100%) skewX(-20deg); }
+  100% { transform: translateX(200%) skewX(-20deg); }
+}
+
+@keyframes sparkleRotate {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.navbar h1 {
+  color: white;
+  margin: 0;
+  font-size: 2rem;
+  text-align: center;
+  text-shadow: 3px 3px 0 #e6007a,
+               4px 4px 6px rgba(230, 0, 122, 0.4),
+               0 0 10px rgba(255, 255, 255, 0.4);
+  position: relative;
+  padding: 0 2.5rem;
+  font-family: 'Quicksand', sans-serif;
+  letter-spacing: 1px;
+  grid-column: 2;
+  animation: titleGlow 2s ease-in-out infinite;
+}
+
+.navbar h1::before,
+.navbar h1::after {
+  content: '✨';
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 1.4rem;
+  animation: titleSparkle 2s infinite ease-in-out;
+}
+
+.navbar h1::before {
+  left: 0.5rem;
+  animation-delay: 0s;
+}
+
+.navbar h1::after {
+  right: 0.5rem;
+  animation-delay: 1s;
+}
+
+/* Additional sparkles */
+.navbar h1 span {
+  position: absolute;
+  font-size: 1.2rem;
+  pointer-events: none;
+  animation: floatingSparkle 3s infinite ease-in-out;
+}
+
+.navbar h1 span:nth-child(1) {
+  top: -10px;
+  left: 20%;
+  animation-delay: 0s;
+}
+
+.navbar h1 span:nth-child(2) {
+  top: -5px;
+  right: 25%;
+  animation-delay: 0.5s;
+}
+
+.navbar h1 span:nth-child(3) {
+  bottom: -10px;
+  left: 30%;
+  animation-delay: 1s;
+}
+
+.navbar h1 span:nth-child(4) {
+  bottom: -8px;
+  right: 35%;
+  animation-delay: 1.5s;
+}
+
+@keyframes titleSparkle {
+  0%, 100% { 
+    transform: translateY(-50%) scale(0.8);
+    opacity: 0.5;
+    filter: brightness(1);
+  }
+  50% { 
+    transform: translateY(-50%) scale(1.2);
+    opacity: 1;
+    filter: brightness(1.5);
+  }
+}
+
+@keyframes floatingSparkle {
+  0%, 100% {
+    transform: translate(0, 0) rotate(0deg) scale(0.8);
+    opacity: 0.5;
+  }
+  50% {
+    transform: translate(5px, -5px) rotate(45deg) scale(1.2);
+    opacity: 1;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .navbar h1 span {
+    font-size: 1rem;
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .navbar h1 span {
+    font-size: 0.8rem;
+  }
+}
+
+.navbar .total-value {
+  margin: 0;
+  background: linear-gradient(135deg, 
+    rgba(255, 255, 255, 0.4),
+    rgba(255, 255, 255, 0.2)
+  );
+  backdrop-filter: blur(8px);
+  border-radius: 30px;
+  padding: 0.7rem 1.4rem;
+  color: white;
+  font-weight: 600;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1),
+              inset 0 0 0 2px rgba(255, 255, 255, 0.5);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  transform-origin: right center;
+  font-family: 'Quicksand', sans-serif;
+  letter-spacing: 0.5px;
+  white-space: nowrap;
+  grid-column: 3;
+  justify-self: end;
+  position: relative;
+  overflow: hidden;
+}
+
+.navbar .total-value::after {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  right: -50%;
+  bottom: -50%;
+  background: radial-gradient(
+    circle,
+    rgba(255, 255, 255, 0.2) 0%,
+    transparent 70%
+  );
+  animation: scoreSparkle 4s infinite linear;
+}
+
+@keyframes scoreSparkle {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+@media screen and (max-width: 768px) {
+  .navbar-content {
+    grid-template-columns: minmax(80px, 1fr) auto minmax(80px, 1fr);
+    padding: 0 0.8rem;
+  }
+
+  .navbar h1 {
+    font-size: 1.4rem;
+    padding: 0 2rem;
+    line-height: 1.2;
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .navbar-content {
+    grid-template-columns: minmax(60px, 1fr) auto minmax(60px, 1fr);
+    padding: 0 0.6rem;
+  }
+
+  .navbar h1 {
+    font-size: 1.1rem;
+    padding: 0 1.8rem;
+  }
+}
+
+.navbar h1::before,
+.navbar h1::after {
+  content: '✨';
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 1.4rem;
+  animation: titleSparkle 2s infinite ease-in-out;
+}
+
+.navbar h1::before {
+  left: 0.5rem;
+  animation-delay: 0s;
+}
+
+.navbar h1::after {
+  right: 0.5rem;
+  animation-delay: 1s;
+}
+
+@keyframes titleSparkle {
+  0%, 100% { 
+    transform: translateY(-50%) scale(0.8);
+    opacity: 0.5;
+    filter: brightness(1);
+  }
+  50% { 
+    transform: translateY(-50%) scale(1.2);
+    opacity: 1;
+    filter: brightness(1.5);
+  }
+}
+
+.navbar .total-value:hover {
+  transform: translateY(-3px) scale(1.05);
+  box-shadow: 0 8px 25px rgba(255, 182, 193, 0.4),
+              inset 0 0 0 3px rgba(255, 255, 255, 0.7);
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.5), rgba(255, 255, 255, 0.3));
+}
+
+.navbar .total-value::before {
+  content: '👸';
+  font-size: 1.4rem;
+  margin-right: 0.6rem;
+  display: inline-block;
+  animation: barbieFloat 3s infinite ease-in-out;
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.2));
+}
+
+@keyframes barbieFloat {
+  0%, 100% { transform: translateY(0) rotate(0deg); }
+  33% { transform: translateY(-4px) rotate(-8deg); }
+  66% { transform: translateY(-2px) rotate(8deg); }
+}
+
+.navbar .total-value.points-changed {
+  animation: barbieJump 1.2s ease-out forwards;
+  background: linear-gradient(135deg, 
+    rgba(255, 192, 203, 0.9),
+    rgba(255, 105, 180, 0.7)
+  );
+}
+
+@keyframes barbieJump {
+  0% { transform: scale(1); }
+  30% { transform: scale(1.3) rotate(-8deg); }
+  50% { transform: scale(1.2) rotate(8deg); }
+  70% { transform: scale(1.1) rotate(-5deg); }
+  85% { transform: scale(1.05) rotate(3deg); }
+  100% { transform: scale(1) rotate(0); }
+}
+
+.navbar .total-value.points-changed .sparkle {
+  position: absolute;
+  font-size: 1.3rem;
+  font-weight: bold;
+  color: white;
+  text-shadow: 0 0 8px rgba(255, 105, 180, 0.8),
+               0 0 15px rgba(255, 192, 203, 0.6);
+  animation: barbieSparkle 1.5s ease-out forwards;
+  opacity: 0;
+}
+
+@keyframes barbieSparkle {
+  0% {
+    transform: translate(0, 0) scale(0);
+    opacity: 0;
+  }
+  30% {
+    transform: translate(0, -30px) scale(1.3);
+    opacity: 1;
+  }
+  80% {
+    transform: translate(var(--tx, 20px), -80px) scale(1);
+    opacity: 0.8;
+  }
+  100% {
+    transform: translate(var(--tx, 30px), -120px) scale(0);
+    opacity: 0;
+  }
+}
+
+/* Update sparkle styles to show numbers instead of sparkle emoji */
+.navbar .total-value.points-changed .sparkle:nth-child(1) { --tx: -30px; }
+.navbar .total-value.points-changed .sparkle:nth-child(2) { --tx: -15px; }
+.navbar .total-value.points-changed .sparkle:nth-child(3) { --tx: 0px; }
+.navbar .total-value.points-changed .sparkle:nth-child(4) { --tx: 15px; }
+.navbar .total-value.points-changed .sparkle:nth-child(5) { --tx: 30px; }
+
+@media screen and (max-width: 768px) {
+  .navbar {
+    padding: 0.8rem 0;
+  }
+
+  .navbar h1::before,
+  .navbar h1::after {
+    font-size: 1.1rem;
+  }
+
+  .navbar .total-value {
+    padding: 0.5rem 1rem;
+    font-size: 1rem;
+  }
+
+  .navbar .total-value::before {
+    font-size: 1.2rem;
+    margin-right: 0.4rem;
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .navbar {
+    padding: 0.6rem 0;
+  }
+
+  .navbar h1::before,
+  .navbar h1::after {
+    font-size: 1rem;
+  }
+
+  .navbar .total-value {
+    padding: 0.4rem 0.8rem;
+    font-size: 0.9rem;
+  }
+
+  .navbar .total-value::before {
+    font-size: 1.1rem;
+    margin-right: 0.3rem;
+  }
+
+  .navbar .total-value.points-changed .sparkle {
+    font-size: 1rem;
+  }
+}
+
+.navbar-content {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: minmax(100px, 1fr) auto minmax(100px, 1fr);
+  align-items: center;
+  padding: 0 1rem;
+  position: relative;
+  z-index: 1;
+}

@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react'
 import './App.css'
+import Navbar from './components/Navbar'
 
 function App() {
   const numbers = Array.from({ length: 9 }, (_, i) => i + 1)
@@ -162,47 +163,39 @@ function App() {
   }, [])
 
   return (
-    <div className="container">
-      <h1>
-        ✨ Suzy's Tafels Avontuur ✨
-        <span className="title-sparkle">✨</span>
-        <span className="title-sparkle">✨</span>
-        <span className="title-sparkle">✨</span>
-        <span className="title-sparkle">✨</span>
-      </h1>
-      <div className={`total-value ${isScoreAnimating ? 'points-changed' : ''}`}>
-        Score: {totalValue}
-      </div>
-      <div className="grid">
-        <div className="row header">
-          <div className="cell"></div>
-          {numbers.map(num => (
-            <div key={num} className={`cell header-cell ${completedCols.includes(num) ? 'completed-col' : ''}`}>
-              {num}
-            </div>
-          ))}
-        </div>
-        {numbers.map(row => (
-          <div key={row} className="row">
-            <div className={`cell header-cell ${completedRows.includes(row) ? 'completed-row' : ''}`}>
-              {row}
-            </div>
-            {numbers.map(col => (
-              <div
-                key={`${row}-${col}`}
-                className={getCellClass(`${row}-${col}`, row, col)}
-                onClick={() => handleCellClick(row, col)}
-              >
-                {getCellContent(row, col)}
+    <>
+      <Navbar score={totalValue} isScoreAnimating={isScoreAnimating} />
+      <div className="container">
+        <div className="grid">
+          <div className="row header">
+            <div className="cell"></div>
+            {numbers.map(num => (
+              <div key={num} className={`cell header-cell ${completedCols.includes(num) ? 'completed-col' : ''}`}>
+                {num}
               </div>
             ))}
           </div>
-        ))}
+          {numbers.map(row => (
+            <div key={row} className="row">
+              <div className={`cell header-cell ${completedRows.includes(row) ? 'completed-row' : ''}`}>
+                {row}
+              </div>
+              {numbers.map(col => (
+                <div
+                  key={`${row}-${col}`}
+                  className={getCellClass(`${row}-${col}`, row, col)}
+                  onClick={() => handleCellClick(row, col)}
+                >
+                  {getCellContent(row, col)}
+                </div>
+              ))}
+            </div>
+          ))}
+        </div>
+        <button className="reset-button" onClick={handleReset}>
+          ✨ Opnieuw Spelen ✨
+        </button>
       </div>
-      <button className="reset-button" onClick={handleReset}>
-        ✨ Opnieuw Spelen ✨
-      </button>
-
       {showResetDialog && (
         <div className="dialog-overlay" onClick={() => setShowResetDialog(false)}>
           <div className="dialog" onClick={e => e.stopPropagation()}>
@@ -230,7 +223,6 @@ function App() {
           </div>
         </div>
       )}
-
       {showDialog && currentProblem && (
         <div className="dialog-overlay" onClick={() => setShowDialog(false)}>
           <div className="dialog" onClick={e => e.stopPropagation()}>
@@ -265,7 +257,7 @@ function App() {
           </div>
         </div>
       )}
-    </div>
+    </>
   )
 }
 
