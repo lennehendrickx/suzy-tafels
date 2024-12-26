@@ -67,7 +67,7 @@ function App() {
   }
 
   const getCellClass = (key: string) => {
-    if (answers[key] === undefined) return 'cell'
+    if (answers[key] === undefined) return 'cell unanswered'
     return `cell ${isCorrect[key] ? 'correct' : 'incorrect'}`
   }
 
@@ -79,6 +79,30 @@ function App() {
       <span></span>
     </div>
   )
+
+  const getCellContent = (row: number, col: number) => {
+    const key = `${row}-${col}`
+    if (answers[key] !== undefined) {
+      return (
+        <>
+          {answers[key]}
+          {isCorrect[key] && renderSparkles()}
+          {retries[key] > 0 && (
+            <span className="retry-count">
+              {retries[key]}
+            </span>
+          )}
+        </>
+      )
+    }
+    return (
+      <div className="multiplication">
+        <span>{row}</span>
+        <span>×</span>
+        <span>{col}</span>
+      </div>
+    )
+  }
 
   return (
     <div className="container">
@@ -104,13 +128,7 @@ function App() {
                 className={getCellClass(`${row}-${col}`)}
                 onClick={() => handleCellClick(row, col)}
               >
-                {answers[`${row}-${col}`] ?? ''}
-                {isCorrect[`${row}-${col}`] && renderSparkles()}
-                {retries[`${row}-${col}`] > 0 && (
-                  <span className="retry-count">
-                    {retries[`${row}-${col}`]}
-                  </span>
-                )}
+                {getCellContent(row, col)}
               </div>
             ))}
           </div>

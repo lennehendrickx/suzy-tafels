@@ -432,3 +432,32 @@ h1 {
   background-color: #ffcdd2;
   color: #c62828;
 }
+
+.cell.unanswered {
+  color: #ff9ecd;
+}
+
+.multiplication {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  font-size: 1.1rem;
+  opacity: 0.8;
+  transition: all 0.3s ease;
+}
+
+.cell.unanswered:hover .multiplication {
+  opacity: 1;
+  transform: scale(1.1);
+  color: #e6007a;
+}
+
+.multiplication span {
+  display: inline-block;
+}
+
+.multiplication span:nth-child(2) {
+  font-weight: bold;
+  color: #e6007a;
+}
