@@ -8,14 +8,14 @@ function App() {
   const [showDialog, setShowDialog] = useState(false)
   const [currentProblem, setCurrentProblem] = useState<{ row: number; col: number } | null>(null)
   const [inputValue, setInputValue] = useState('')
+  const [feedback, setFeedback] = useState('')
 
   const handleCellClick = (row: number, col: number) => {
     const key = `${row}-${col}`
-    if (answers[key] === undefined) {
-      setCurrentProblem({ row, col })
-      setShowDialog(true)
-      setInputValue('')
-    }
+    setCurrentProblem({ row, col })
+    setShowDialog(true)
+    setInputValue('')
+    setFeedback('')
   }
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -25,16 +25,22 @@ function App() {
       if (!isNaN(numAnswer)) {
         const key = `${currentProblem.row}-${currentProblem.col}`
         const correct = numAnswer === currentProblem.row * currentProblem.col
-        setAnswers(prev => ({
-          ...prev,
-          [key]: numAnswer
-        }))
-        setIsCorrect(prev => ({
-          ...prev,
-          [key]: correct
-        }))
-        setShowDialog(false)
-        setCurrentProblem(null)
+        
+        if (correct) {
+          setAnswers(prev => ({
+            ...prev,
+            [key]: numAnswer
+          }))
+          setIsCorrect(prev => ({
+            ...prev,
+            [key]: true
+          }))
+          setShowDialog(false)
+          setCurrentProblem(null)
+        } else {
+          setFeedback(`Oops! That's not quite right. Let's try again! 💝\nHint: Count ${currentProblem.row} groups of ${currentProblem.col}`)
+          setInputValue('')
+        }
       }
     }
   }
@@ -42,6 +48,9 @@ function App() {
   const handleReset = () => {
     setAnswers({})
     setIsCorrect({})
+    setShowDialog(false)
+    setCurrentProblem(null)
+    setFeedback('')
     alert("✨ Let's start a new round of fun math! Ready? 💖")
   }
 
@@ -95,13 +104,14 @@ function App() {
       </button>
 
       {showDialog && currentProblem && (
-        <div className="dialog-overlay">
-          <div className="dialog">
+        <div className="dialog-overlay" onClick={() => setShowDialog(false)}>
+          <div className="dialog" onClick={e => e.stopPropagation()}>
             <div className="dialog-content">
               <h2>✨ Time to Multiply! ✨</h2>
               <p className="problem">
                 What is {currentProblem.row} × {currentProblem.col}?
               </p>
+              {feedback && <p className="feedback">{feedback}</p>}
               <form onSubmit={handleSubmit}>
                 <input
                   type="number"
