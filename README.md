@@ -2,6 +2,9 @@
 
 A React-based web application designed to help children practice multiplication tables in an interactive and engaging way. This project is an experimental implementation developed using [Cursor IDE](https://cursor.sh/), exploring modern development workflows and AI-assisted coding.
 
+## Demo
+[The demo](https://lennehendrickx.github.io/suzy-tafels/) is hosted on GitHub Pages and is published automatically using GitHub Actions.
+
 ## Features
 
 - Interactive multiplication practice
